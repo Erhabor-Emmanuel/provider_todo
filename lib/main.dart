@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider_todo_list/constants/colors.dart';
 import 'package:provider_todo_list/screens/splash.dart';
 
 void main() {
@@ -12,9 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+          color: primaryColor,
+        ),
+        primaryColor: primaryColor,
       ),
       home: const  SplashScreen(),
     );
