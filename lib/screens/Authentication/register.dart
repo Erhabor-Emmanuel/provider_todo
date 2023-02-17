@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_todo_list/widgets/button.dart';
-
 import '../../provider/AuthProvider/auth_provider.dart';
 import '../../utils/routers.dart';
 import '../../utils/snack_message.dart';
@@ -63,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   Consumer<AuthProvider>(
                       builder: (context, auth, child) {
-                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (auth.resMessage != '') {
                             showMessage(
                                 message: auth.resMessage, context: context);
@@ -78,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               if (_email.text.isEmpty ||
                                   _password.text.isEmpty ||
                                   _firstName.text.isEmpty ||
-                                  _lastName.text.isEmpty) {
+                                  _lastName.text.isEmpty)  {
                                 showMessage(
                                     message: "All fields are required",
                                     context: context);

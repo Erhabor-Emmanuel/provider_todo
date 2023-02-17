@@ -42,6 +42,8 @@ class AuthProvider extends ChangeNotifier{
       await http.post(Uri.parse(url), body: json.encode(body));
 
       if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        print(res);
         _isLoading = false;
         _resMessage = "Account created!";
         notifyListeners();
@@ -50,8 +52,9 @@ class AuthProvider extends ChangeNotifier{
         final res = json.decode(req.body);
 
         _resMessage = res['message'];
-
-        print(res);
+ 
+        debugPrint(res);
+        debugPrint(_resMessage);
         _isLoading = false;
         notifyListeners();
       }
@@ -89,6 +92,9 @@ class AuthProvider extends ChangeNotifier{
       await http.post(Uri.parse(url), body: json.encode(body));
 
       if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        debugPrint(res);
+        debugPrint(_resMessage);
         _isLoading = false;
         _resMessage = "Account created!";
         notifyListeners();
@@ -98,7 +104,8 @@ class AuthProvider extends ChangeNotifier{
 
         _resMessage = res['message'];
 
-        print(res);
+        debugPrint(res);
+        debugPrint(_resMessage);
         _isLoading = false;
         notifyListeners();
       }
