@@ -115,5 +115,10 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
+  void clear() {
+    _resMessage = "";
+    // _isLoading = false;
+    notifyListeners();
+  }
 
 }

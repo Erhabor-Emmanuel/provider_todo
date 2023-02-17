@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_todo_list/provider/AuthProvider/auth_provider.dart';
 import 'package:provider_todo_list/screens/Authentication/register.dart';
 import 'package:provider_todo_list/widgets/button.dart';
 
 import '../../utils/routers.dart';
+import '../../utils/snack_message.dart';
 import '../../widgets/text_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,11 +47,35 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _password,
                     hint: 'Enter your secured password',
                   ),
-                  customButton(
-                    text: 'Login',
-                    tap: (){},
-                    context: context,
-                    status: false
+                  Consumer<AuthProvider>(
+                    builder: (context, auth, child) {
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        if (auth.resMessage != '') {
+                          showMessage(
+                              message: auth.resMessage, context: context);
+
+                          ///Clear the response message to avoid duplicate
+                          auth.clear();
+                        }
+                      });
+                      return customButton(
+                        text: 'Login',
+                        tap: (){
+                          if (_email.text.isEmpty || _password.text.isEmpty) {
+                            showMessage(
+                                message: "All fields are required",
+                                context: context);
+                          } else {
+                            auth.loginUser(
+                                context: context,
+                                email: _email.text.trim(),
+                                password: _password.text.trim());
+                          }
+                        },
+                        context: context,
+                        status: auth.isLoading
+                      );
+                    }
                   ),
                   const SizedBox(height: 10,),
                   GestureDetector(

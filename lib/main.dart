@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:provider_todo_list/constants/colors.dart';
+import 'package:provider_todo_list/provider/AuthProvider/auth_provider.dart';
 import 'package:provider_todo_list/screens/splash.dart';
 
 void main() {
@@ -12,14 +14,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          color: primaryColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            color: primaryColor,
+          ),
+          primaryColor: primaryColor,
         ),
-        primaryColor: primaryColor,
+        home: const  SplashScreen(),
       ),
-      home: const  SplashScreen(),
     );
   }
 }

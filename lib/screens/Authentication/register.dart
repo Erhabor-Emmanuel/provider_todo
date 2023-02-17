@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:provider_todo_list/widgets/button.dart';
 
+import '../../provider/AuthProvider/auth_provider.dart';
 import '../../utils/routers.dart';
+import '../../utils/snack_message.dart';
 import '../../widgets/text_field.dart';
 import 'login.dart';
 
@@ -58,11 +61,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: _password,
                     hint: 'Enter your secured password',
                   ),
-                  customButton(
-                      text: 'Register ',
-                      tap: (){},
-                      context: context,
-                      status: false
+                  Consumer<AuthProvider>(
+                      builder: (context, auth, child) {
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          if (auth.resMessage != '') {
+                            showMessage(
+                                message: auth.resMessage, context: context);
+
+                            ///Clear the response message to avoid duplicate
+                            auth.clear();
+                          }
+                        });
+                        return customButton(
+                            text: 'Register',
+                            tap: (){
+                              if (_email.text.isEmpty ||
+                                  _password.text.isEmpty ||
+                                  _firstName.text.isEmpty ||
+                                  _lastName.text.isEmpty) {
+                                showMessage(
+                                    message: "All fields are required",
+                                    context: context);
+                              } else {
+                                auth.registerUser(
+                                    firstName: _firstName.text.trim(),
+                                    lastName: _lastName.text.trim(),
+                                    email: _email.text.trim(),
+                                    password: _password.text.trim(),
+                                    context: context);
+                              }
+                            },
+                            context: context,
+                            status: auth.isLoading
+                        );
+                      }
                   ),
                   const SizedBox(height: 10,),
                   GestureDetector(
