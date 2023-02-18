@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
 import '../../provider/database/db_provider.dart';
+import '../../utils/routers.dart';
 import 'Local widgets/tasl_view_container.dart';
+import 'add_taskl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
-                  //
+                  PageNavigator(ctx: context).nextPage(page: const CreateTaskPage());
                 },
                 child: Text(
                   'Create a task',
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         mini: true,
         onPressed: () {
-          // PageNavigator(ctx: context).nextPage(page: const CreateTaskPage());
+          PageNavigator(ctx: context).nextPage(page: const CreateTaskPage());
         },
         child: const Icon(Icons.add),
       ),

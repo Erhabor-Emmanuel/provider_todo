@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/colors.dart';
 import '../../../utils/routers.dart';
+import '../task_details_page.dart';
 
 
 class TaskField extends StatefulWidget {
@@ -30,11 +31,11 @@ class _TaskFieldState extends State<TaskField> {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        // PageNavigator(ctx: context).nextPage(
-        //     page: TaskDetailsPage(
-        //       taskId: widget.taskId,
-        //       title: widget.title,
-        //     ));
+        PageNavigator(ctx: context).nextPage(
+            page: TaskDetailsPage(
+              taskId: widget.taskId,
+              title: widget.title,
+            ));
       },
       contentPadding: const EdgeInsets.all(0),
       title: Text(
