@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:provider_todo_list/constants/colors.dart';
 import 'package:provider_todo_list/provider/AuthProvider/auth_provider.dart';
 import 'package:provider_todo_list/provider/TaskProvider/get_task_service.dart';
+import 'package:provider_todo_list/provider/database/db_provider.dart';
+import 'package:provider_todo_list/screens/TaskPage/homePage.dart';
 import 'package:provider_todo_list/screens/splash.dart';
 
 void main() {
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           ),
           primaryColor: primaryColor,
         ),
-        home: const  SplashScreen(),
+        home: const  HomePage(),
       ),
     );
   }

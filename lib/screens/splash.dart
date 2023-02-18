@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider_todo_list/utils/routers.dart';
 
+import '../provider/database/db_provider.dart';
 import 'Authentication/login.dart';
+import 'TaskPage/homePage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,6 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigate(){
     Future.delayed(const Duration(seconds: 3), (){
        PageNavigator(ctx: context).nextPage(page: const LoginPage());
+       DatabaseProvider().getToken().then((value) {
+         if (value == '') {
+           PageNavigator(ctx: context).nextPageOnly(page: const LoginPage());
+         } else {
+           PageNavigator(ctx: context).nextPageOnly(page: const  HomePage());
+         }
+       });
     });
   }
 
