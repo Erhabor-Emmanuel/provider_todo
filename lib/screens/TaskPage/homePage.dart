@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../constants/colors.dart';
+import '../../model/task_model.dart';
+import '../../provider/TaskProvider/get_task_service.dart';
 import '../../provider/database/db_provider.dart';
 import '../../utils/routers.dart';
 import 'Local widgets/tasl_view_container.dart';
@@ -14,8 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List task = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,44 +25,66 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.exit_to_app),
               onPressed: () {
                 ///logout
-                 DatabaseProvider().logOut(context);
+                DatabaseProvider().logOut(context);
               }),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
-        child: task.isNotEmpty? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Todo List is empty',
-                style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 15),
-              GestureDetector(
-                onTap: () {
-                  PageNavigator(ctx: context).nextPage(page: const CreateTaskPage());
-                },
-                child: Text(
-                  'Create a task',
-                  style: TextStyle(fontSize: 18, color: grey),
-                ),
-              ),
-            ],
-          ),
-        ) : ListView(
-          children: List.generate(5, (index){
-            return TaskField(
-              initial: "${index + 1}",
-              title: 'hello',
-              subtitle: 'time',
-              isCompleted: false,
-              taskId: 'id',
-            );
-          }),
-        ),
+        child: FutureBuilder<TaskModel>(
+            future: GetUserTask().getTask(),
+            builder: (context, snapshot) {
+              print(snapshot);
+              if (snapshot.hasError) {
+                return const Center(child: Text('Error Occured'));
+              } else if (snapshot.hasData) {
+                if (snapshot.data!.tasks == null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Todo List is empty',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 15),
+                        GestureDetector(
+                          onTap: () {
+                            PageNavigator(ctx: context)
+                                .nextPage(page: const CreateTaskPage());
+                          },
+                          child: Text(
+                            'Create a task',
+                            style: TextStyle(fontSize: 18, color: grey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return ListView(
+                    children:
+                    List.generate(snapshot.data!.tasks!.length, (index) {
+                      final data = snapshot.data!.tasks![index];
+                      return TaskField(
+                        initial: "${index + 1}",
+                        title: data.title,
+                        subtitle: data.startTime.toString(),
+                        isCompleted: false,
+                        taskId: data.id.toString(),
+                      );
+                    }),
+                  );
+                }
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: primaryColor,
+                  ),
+                );
+              }
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         mini: true,
